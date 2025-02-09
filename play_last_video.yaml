@@ -1,0 +1,15 @@
+automation:
+  - alias: "Автовоспроизведение последнего видеофайла"
+    trigger:
+      platform: state
+      entity_id: sensor.last_dlna_file_url
+    condition:
+      condition: template
+      value_template: "{{ states('sensor.last_dlna_file_url') | trim != 'No video found' }}"
+    action:
+      - service: media_player.play_media
+        target:
+          entity_id: media_player.smart_tv
+        data_template:
+          media_content_id: "{{ states('sensor.last_dlna_file_url') }}"
+          media_content_type: video/x-matroska
